@@ -6,17 +6,739 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>896</width>
+    <height>803</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
-  <widget class="QMenuBar" name="menubar"/>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout_5">
+    <item row="0" column="0">
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Students</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="3" column="0">
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="1">
+           <widget class="QPushButton" name="studentAddButton">
+            <property name="text">
+             <string>Add</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" colspan="3">
+           <layout class="QGridLayout" name="gridLayout_7">
+            <item row="6" column="0">
+             <widget class="QLabel" name="label_5">
+              <property name="text">
+               <string>Birth date:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="7">
+             <spacer name="horizontalSpacer_4">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="4" column="10">
+             <widget class="QPushButton" name="studentRemoveWorkButton">
+              <property name="text">
+               <string>Remove work</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="7" rowspan="4" colspan="4">
+             <widget class="QListView" name="studentWorkListView"/>
+            </item>
+            <item row="5" column="0">
+             <widget class="QLabel" name="label_4">
+              <property name="text">
+               <string>Name:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0" colspan="11">
+             <widget class="QLabel" name="label_8">
+              <property name="text">
+               <string>Details</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="6">
+             <widget class="QPushButton" name="studentRemoveClassButton">
+              <property name="text">
+               <string>Remove class</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="1" colspan="2">
+             <widget class="QLineEdit" name="studentNameLineEdit"/>
+            </item>
+            <item row="5" column="3" rowspan="4" colspan="4">
+             <widget class="QListView" name="studentClassListView"/>
+            </item>
+            <item row="7" column="0">
+             <widget class="QLabel" name="label_6">
+              <property name="text">
+               <string>Status:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="3">
+             <spacer name="horizontalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="4" column="4">
+             <widget class="QComboBox" name="studentSelectClassComboBox"/>
+            </item>
+            <item row="8" column="1" colspan="2">
+             <widget class="QLineEdit" name="studentCourseLineEdit"/>
+            </item>
+            <item row="7" column="1" colspan="2">
+             <widget class="QLineEdit" name="studentStatusLineEdit"/>
+            </item>
+            <item row="4" column="5">
+             <widget class="QPushButton" name="studentAddClassButton">
+              <property name="text">
+               <string>Add class</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0">
+             <widget class="QLabel" name="label_3">
+              <property name="text">
+               <string>Student number:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="8" column="0">
+             <widget class="QLabel" name="label_7">
+              <property name="text">
+               <string>Course:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="1" colspan="2">
+             <widget class="QDateEdit" name="studentBirthDateEdit"/>
+            </item>
+            <item row="4" column="1" colspan="2">
+             <widget class="QLineEdit" name="studentNumberLineEdit"/>
+            </item>
+            <item row="4" column="9">
+             <widget class="QPushButton" name="studentAddWorkButton">
+              <property name="text">
+               <string>Add work</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="8">
+             <widget class="QComboBox" name="studentSelectWorkComboBox"/>
+            </item>
+           </layout>
+          </item>
+          <item row="5" column="0">
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="0" column="2">
+           <widget class="QPushButton" name="studentRemoveButton">
+            <property name="text">
+             <string>Remove</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QPushButton" name="studentAcceptButton">
+            <property name="text">
+             <string>Accept</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="3">
+           <widget class="QTableView" name="studentTableView"/>
+          </item>
+          <item row="5" column="2">
+           <widget class="QPushButton" name="studentCancelButton">
+            <property name="text">
+             <string>Cancel</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="0" column="0">
+         <layout class="QGridLayout" name="gridLayout_6">
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Birth date to:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QPushButton" name="studentSearchButton">
+            <property name="text">
+             <string>Search</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Birth date from:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QDateEdit" name="studentBirthDateToEdit"/>
+          </item>
+          <item row="1" column="1">
+           <widget class="QDateEdit" name="studentBirthDateFromEdit">
+            <property name="minimumDate">
+             <date>
+              <year>1900</year>
+              <month>1</month>
+              <day>1</day>
+             </date>
+            </property>
+            <property name="date">
+             <date>
+              <year>1900</year>
+              <month>1</month>
+              <day>1</day>
+             </date>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
+        <string>Teachers</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="0" column="0">
+         <layout class="QGridLayout" name="gridLayout_9"/>
+        </item>
+        <item row="1" column="0">
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="3" column="2">
+           <widget class="QPushButton" name="teacherCancelButton">
+            <property name="text">
+             <string>Cancel</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="3">
+           <layout class="QGridLayout" name="gridLayout_10">
+            <item row="6" column="3">
+             <widget class="QSpinBox" name="teacherReducedHoursSpinBox">
+              <property name="maximum">
+               <number>9999</number>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="0">
+             <widget class="QLabel" name="label_13">
+              <property name="text">
+               <string>Pulpit:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0">
+             <widget class="QLabel" name="label_11">
+              <property name="text">
+               <string>Name:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="7" column="0">
+             <widget class="QLabel" name="label_14">
+              <property name="text">
+               <string>Qualification:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="3">
+             <widget class="QLineEdit" name="teacherPostLineEdit"/>
+            </item>
+            <item row="4" column="2">
+             <widget class="QLabel" name="label_16">
+              <property name="text">
+               <string>Maximal work hours:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="7" column="1">
+             <widget class="QLineEdit" name="teacherQualificationLineEdit"/>
+            </item>
+            <item row="3" column="1">
+             <widget class="QLineEdit" name="teacherNumberLineEdit"/>
+            </item>
+            <item row="4" column="1">
+             <widget class="QLineEdit" name="teacherNameLineEdit"/>
+            </item>
+            <item row="3" column="7">
+             <widget class="QPushButton" name="teacherRemoveSubjectButton">
+              <property name="text">
+               <string>Remove subject</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="4" rowspan="4" colspan="4">
+             <widget class="QListView" name="teacherSubjectListView"/>
+            </item>
+            <item row="6" column="1">
+             <widget class="QLineEdit" name="teacherPulpitLineEdit"/>
+            </item>
+            <item row="4" column="3">
+             <widget class="QSpinBox" name="teacherMaximalWorkHoursSpinBox">
+              <property name="maximum">
+               <number>9999</number>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="5">
+             <widget class="QComboBox" name="teacherSelectSubjectComboBox"/>
+            </item>
+            <item row="5" column="1">
+             <widget class="QDateEdit" name="teacherBirthDateEdit"/>
+            </item>
+            <item row="3" column="4">
+             <spacer name="horizontalSpacer_5">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="label_10">
+              <property name="text">
+               <string>Teacher number:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="0">
+             <widget class="QLabel" name="label_12">
+              <property name="text">
+               <string>Birth date:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="2">
+             <widget class="QLabel" name="label_18">
+              <property name="text">
+               <string>Reduced hours:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="2">
+             <widget class="QLabel" name="label_15">
+              <property name="text">
+               <string>Post:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="6">
+             <widget class="QPushButton" name="teacherAddSubjectButton">
+              <property name="text">
+               <string>Add subject</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0" colspan="8">
+             <widget class="QLabel" name="label_9">
+              <property name="text">
+               <string>Details</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="2" colspan="2">
+             <widget class="QCheckBox" name="teacherIsLoadReducedCheckBox">
+              <property name="text">
+               <string>Is load reduced</string>
+              </property>
+             </widget>
+            </item>
+            <item row="7" column="2" colspan="2">
+             <widget class="QCheckBox" name="teacherIsForeignCheckBox">
+              <property name="text">
+               <string>Is teacher foreign</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="3" column="0">
+           <spacer name="horizontalSpacer_6">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="3" column="1">
+           <widget class="QPushButton" name="teacherAcceptButton">
+            <property name="text">
+             <string>Accept</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="3">
+           <widget class="QTableView" name="teacherTableView"/>
+          </item>
+          <item row="0" column="2">
+           <widget class="QPushButton" name="teacherRemoveButton">
+            <property name="text">
+             <string>Remove</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QPushButton" name="teacherAddButton">
+            <property name="text">
+             <string>Add</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>896</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>studentAddButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addStudent()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>731</x>
+     <y>167</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>891</x>
+     <y>115</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>studentRemoveButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>removeStudent()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>816</x>
+     <y>167</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>889</x>
+     <y>168</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>studentAcceptButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>acceptStudentsChanges()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>731</x>
+     <y>735</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>755</x>
+     <y>777</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>studentCancelButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>cancelStudentsChanges()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>816</x>
+     <y>735</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>833</x>
+     <y>776</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>studentSearchButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>filterStudents()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>54</x>
+     <y>134</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>5</x>
+     <y>170</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>studentAddClassButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addStudentClass()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>383</x>
+     <y>578</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>776</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>studentRemoveClassButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>removeStudentClass()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>469</x>
+     <y>578</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>513</x>
+     <y>780</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>studentAddWorkButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addStudentWork()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>703</x>
+     <y>578</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>574</x>
+     <y>776</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>studentRemoveWorkButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>removeStudentWork()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>789</x>
+     <y>578</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>806</x>
+     <y>780</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>teacherAddButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addTeacher()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>758</x>
+     <y>86</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>893</x>
+     <y>73</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>teacherRemoveButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>removeTeacher()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>855</x>
+     <y>92</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>894</x>
+     <y>54</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>teacherAddSubjectButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addTeacherSubject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>745</x>
+     <y>583</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>891</x>
+     <y>566</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>teacherRemoveSubjectButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>removeTeacherSubject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>832</x>
+     <y>584</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>891</x>
+     <y>600</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>teacherAcceptButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>acceptTeachersChanges()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>759</x>
+     <y>744</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>892</x>
+     <y>752</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>teacherCancelButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>cancelTeachersChanges()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>848</x>
+     <y>746</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>895</x>
+     <y>729</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>addStudent()</slot>
+  <slot>removeStudent()</slot>
+  <slot>acceptStudentsChanges()</slot>
+  <slot>cancelStudentsChanges()</slot>
+  <slot>filterStudents()</slot>
+  <slot>addStudentClass()</slot>
+  <slot>removeStudentClass()</slot>
+  <slot>addStudentWork()</slot>
+  <slot>removeStudentWork()</slot>
+  <slot>addTeacher()</slot>
+  <slot>removeTeacher()</slot>
+  <slot>acceptTeachersChanges()</slot>
+  <slot>cancelTeachersChanges()</slot>
+  <slot>addTeacherSubject()</slot>
+  <slot>removeTeacherSubject()</slot>
+ </slots>
 </ui>
