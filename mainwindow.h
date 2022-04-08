@@ -18,6 +18,7 @@ public:
 
 public slots:
     void filterStudents();
+    void clearFilterStudents();
     void addStudent();
     void removeStudent();
     void setCurrentStudentIndex(const QModelIndex &index);
@@ -29,6 +30,7 @@ public slots:
     void cancelStudentsChanges();
 
     void filterTeachers();
+    void clearFilterTeachers();
     void addTeacher();
     void removeTeacher();
     void setCurrentTeacherIndex(const QModelIndex &index);

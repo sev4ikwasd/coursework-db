@@ -128,6 +128,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->teacherTableView->selectionModel(), &QItemSelectionModel::currentRowChanged, teacherMapper, &QDataWidgetMapper::setCurrentModelIndex);
     connect(ui->teacherTableView->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &MainWindow::setCurrentTeacherIndex);
+
+    ui->teacherBirthDateFromEdit->setMaximumDate(QDate::currentDate());
+    ui->teacherBirthDateToEdit->setDate(QDate::currentDate());
+    ui->teacherBirthDateToEdit->setMaximumDate(QDate::currentDate());
 }
 
 MainWindow::~MainWindow()
@@ -145,9 +149,15 @@ MainWindow::~MainWindow()
 
 void MainWindow::filterStudents()
 {
-    auto dateFromString = ui->studentBirthDateFromEdit->date().toString(Qt::ISODate);
-    auto dateToString = ui->studentBirthDateToEdit->date().toString(Qt::ISODate);
-    studentModel->setFilter(QString("birth_date BETWEEN \'%1\' AND \'%2\'").arg(dateFromString, dateToString));
+    QString birthDateFromString = ui->studentBirthDateFromEdit->date().toString(Qt::ISODate);
+    QString birthDateToString = ui->studentBirthDateToEdit->date().toString(Qt::ISODate);
+    studentModel->setFilter(QString("birth_date BETWEEN \'%1\' AND \'%2\'").arg(birthDateFromString, birthDateToString));
+    studentModel->select();
+}
+
+void MainWindow::clearFilterStudents()
+{
+    studentModel->setFilter("");
     studentModel->select();
 }
 
@@ -299,7 +309,23 @@ void MainWindow::cancelStudentsChanges()
 
 void MainWindow::filterTeachers()
 {
+    QString birthDateFromString = ui->teacherBirthDateFromEdit->date().toString(Qt::ISODate);
+    QString birthDateToString = ui->teacherBirthDateToEdit->date().toString(Qt::ISODate);
+    QString maximalWorkHoursFromString = QString::number(ui->teacherMaximalWorkHoursFromSpinBox->value());
+    QString maximalWorkHoursToString = QString::number(ui->teacherMaximalWorkHoursToSpinBox->value());
+    QString isLoadReducedString = ui->teacherIsLoadReducedFilterCheckBox->isChecked() ? "TRUE" : "FALSE";
+    QString reducedHoursFromString = QString::number(ui->teacherReducedHoursFromSpinBox->value());
+    QString reducedHoursToString = QString::number(ui->teacherReducedHoursToSpinBox->value());
+    QString isForeignString = ui->teacherIsForeignFilterCheckBox->isChecked() ? "TRUE" : "FALSE";
+    teacherModel->setFilter(QString("(birth_date BETWEEN \'%1\' AND \'%2\') AND (maximal_hours BETWEEN %3 AND %4) AND is_load_reduced = %5 AND (reduced_hours BETWEEN %6 AND %7) AND is_foreign = %8")
+                            .arg(birthDateFromString, birthDateToString, maximalWorkHoursFromString, maximalWorkHoursToString, isLoadReducedString, reducedHoursFromString, reducedHoursToString, isForeignString));
+    teacherModel->select();
+}
 
+void MainWindow::clearFilterTeachers()
+{
+    teacherModel->setFilter("");
+    teacherModel->select();
 }
 
 void MainWindow::addTeacher()
