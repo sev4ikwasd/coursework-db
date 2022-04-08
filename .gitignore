@@ -1,6 +1,15 @@
 # This file is used to ignore files which are generated
 # ----------------------------------------------------------------------------
 
+# Ignore all
+*
+
+# Unignore all with extensions
+!*.*
+
+# Unignore all dirs
+!*/
+
 *~
 *.autosave
 *.a
