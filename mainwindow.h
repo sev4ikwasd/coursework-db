@@ -39,6 +39,25 @@ public slots:
     void acceptTeachersChanges();
     void cancelTeachersChanges();
 
+    void addSubject();
+    void removeSubject();
+    void acceptSubjectsChanges();
+    void cancelSubjectsChanges();
+
+    void filterClasses();
+    void clearFilterClasses();
+    void addClass();
+    void removeClass();
+    void acceptClassesChanges();
+    void cancelClassesChanges();
+
+    void filterWorks();
+    void clearFilterWorks();
+    void addWork();
+    void removeWork();
+    void acceptWorksChanges();
+    void cancelWorksChanges();
+
 private:
     Ui::MainWindow *ui;
 
@@ -50,7 +69,12 @@ private:
 
     QSqlTableModel *teacherModel;
     QSqlRelationalTableModel *teacherToSubjectModel;
-    QSqlQueryModel *possibleSubjectModel;
+
+    QSqlTableModel *subjectModel;
+
+    QSqlRelationalTableModel *classModel;
+
+    QSqlRelationalTableModel *workModel;
 };
 
 #endif // MAINWINDOW_H

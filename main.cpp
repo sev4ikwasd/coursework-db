@@ -29,14 +29,16 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     QTranslator translator;
-    const QStringList uiLanguages = QLocale::system().uiLanguages();
+    /*const QStringList uiLanguages = QLocale::system().uiLanguages();
     for (const QString &locale : uiLanguages) {
         const QString baseName = "4-db-coursework_" + QLocale(locale).name();
         if (translator.load(":/i18n/" + baseName)) {
             a.installTranslator(&translator);
             break;
         }
-    }
+    }*/
+    translator.load(":/i18n/4-db-coursework_ru_RU");
+    a.installTranslator(&translator);
 
     if(!createConnection())
         return EXIT_FAILURE;

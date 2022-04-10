@@ -6,6 +6,8 @@
 #include <QSqlError>
 #include <QSqlRecord>
 #include <QUuid>
+#include <QSqlQuery>
+#include <QSqlRelationalDelegate>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -16,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     studentModel = new QSqlTableModel();
     studentModel->setTable("student");
     studentModel->setHeaderData(studentModel->fieldIndex("student_number"), Qt::Horizontal, tr("Student number"));
-    studentModel->setHeaderData(studentModel->fieldIndex("name"), Qt::Horizontal, tr("Name"));
+    studentModel->setHeaderData(studentModel->fieldIndex("name"), Qt::Horizontal, tr("Name", "person"));
     studentModel->setHeaderData(studentModel->fieldIndex("birth_date"), Qt::Horizontal, tr("Birth date"));
     studentModel->setHeaderData(studentModel->fieldIndex("status"), Qt::Horizontal, tr("Status"));
     studentModel->setHeaderData(studentModel->fieldIndex("course"), Qt::Horizontal, tr("Course"));
@@ -79,7 +81,7 @@ MainWindow::MainWindow(QWidget *parent)
     teacherModel = new QSqlTableModel();
     teacherModel->setTable("teacher");
     teacherModel->setHeaderData(teacherModel->fieldIndex("teacher_number"), Qt::Horizontal, tr("Teacher number"));
-    teacherModel->setHeaderData(teacherModel->fieldIndex("name"), Qt::Horizontal, tr("Name"));
+    teacherModel->setHeaderData(teacherModel->fieldIndex("name"), Qt::Horizontal, tr("Name", "person"));
     teacherModel->setHeaderData(teacherModel->fieldIndex("birth_date"), Qt::Horizontal, tr("Birth date"));
     teacherModel->setHeaderData(teacherModel->fieldIndex("pulpit"), Qt::Horizontal, tr("Pulpit"));
     teacherModel->setHeaderData(teacherModel->fieldIndex("qualification"), Qt::Horizontal, tr("Qualification"));
@@ -120,18 +122,119 @@ MainWindow::MainWindow(QWidget *parent)
     ui->teacherSubjectListView->setModelColumn(teacherToSubjectModel->fieldIndex("id_subject"));
     ui->teacherSubjectListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    possibleSubjectModel = new QSqlQueryModel();
-    possibleSubjectModel->setQuery("SELECT id, name FROM subject;");
-
-    ui->teacherSelectSubjectComboBox->setModel(possibleSubjectModel);
-    ui->teacherSelectSubjectComboBox->setModelColumn(1);
-
     connect(ui->teacherTableView->selectionModel(), &QItemSelectionModel::currentRowChanged, teacherMapper, &QDataWidgetMapper::setCurrentModelIndex);
     connect(ui->teacherTableView->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &MainWindow::setCurrentTeacherIndex);
 
     ui->teacherBirthDateFromEdit->setMaximumDate(QDate::currentDate());
     ui->teacherBirthDateToEdit->setDate(QDate::currentDate());
     ui->teacherBirthDateToEdit->setMaximumDate(QDate::currentDate());
+
+
+    subjectModel = new QSqlTableModel();
+    subjectModel->setTable("subject");
+    subjectModel->setHeaderData(subjectModel->fieldIndex("name"), Qt::Horizontal, tr("Name", "object"));
+    subjectModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    subjectModel->select();
+
+    ui->subjectTableView->setModel(subjectModel);
+    ui->subjectTableView->setColumnHidden(subjectModel->fieldIndex("id"), true);
+    ui->subjectTableView->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->subjectTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->subjectTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+
+    QDataWidgetMapper *subjectMapper = new QDataWidgetMapper();
+    subjectMapper->setModel(subjectModel);
+    subjectMapper->addMapping(ui->subjectNameLineEdit, subjectModel->fieldIndex("name"));
+    subjectMapper->toFirst();
+
+    connect(ui->subjectTableView->selectionModel(), &QItemSelectionModel::currentRowChanged, subjectMapper, &QDataWidgetMapper::setCurrentModelIndex);
+
+    ui->teacherSelectSubjectComboBox->setModel(subjectModel);
+    ui->teacherSelectSubjectComboBox->setModelColumn(1);
+
+
+    classModel = new QSqlRelationalTableModel();
+    classModel->setTable("class");
+    classModel->setHeaderData(classModel->fieldIndex("teacher_id"), Qt::Horizontal, tr("Teacher"));
+    classModel->setRelation(classModel->fieldIndex("teacher_id"), QSqlRelation("teacher", "id", "name"));
+    classModel->setHeaderData(classModel->fieldIndex("subject_id"), Qt::Horizontal, tr("Subject"));
+    classModel->setRelation(classModel->fieldIndex("subject_id"), QSqlRelation("subject", "id", "name"));
+    classModel->setHeaderData(classModel->fieldIndex("name"), Qt::Horizontal, tr("Name", "object"));
+    classModel->setHeaderData(classModel->fieldIndex("type"), Qt::Horizontal, tr("Type"));
+    classModel->setHeaderData(classModel->fieldIndex("hours"), Qt::Horizontal, tr("Hours"));
+    classModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    classModel->select();
+
+    ui->classTableView->setModel(classModel);
+    ui->classTableView->setItemDelegate(new QSqlRelationalDelegate());
+    ui->classTableView->setColumnHidden(classModel->fieldIndex("id"), true);
+    ui->classTableView->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->classTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->classTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+
+    ui->classTeacherComboBox->setModel(classModel->relationModel(1));
+    ui->classTeacherComboBox->setModelColumn(classModel->relationModel(1)->fieldIndex("name"));
+    ui->classSubjectComboBox->setModel(classModel->relationModel(2));
+    ui->classSubjectComboBox->setModelColumn(classModel->relationModel(2)->fieldIndex("name"));
+
+    QDataWidgetMapper *classMapper = new QDataWidgetMapper();
+    classMapper->setModel(classModel);
+    classMapper->setItemDelegate(new QSqlRelationalDelegate());
+    classMapper->addMapping(ui->classTeacherComboBox, 1);
+    classMapper->addMapping(ui->classSubjectComboBox, 2);
+    classMapper->addMapping(ui->classNameLineEdit, classModel->fieldIndex("name"));
+    classMapper->addMapping(ui->classTypeLineEdit, classModel->fieldIndex("type"));
+    classMapper->addMapping(ui->classHoursSpinBox, classModel->fieldIndex("hours"));
+    classMapper->toFirst();
+
+    connect(ui->classTableView->selectionModel(), &QItemSelectionModel::currentRowChanged, classMapper, &QDataWidgetMapper::setCurrentModelIndex);
+
+    ui->classTeacherFilterComboBox->setModel(classModel->relationModel(1));
+    ui->classTeacherFilterComboBox->setModelColumn(classModel->relationModel(1)->fieldIndex("name"));
+    ui->classSubjectFilterComboBox->setModel(classModel->relationModel(2));
+    ui->classSubjectFilterComboBox->setModelColumn(classModel->relationModel(2)->fieldIndex("name"));
+
+
+    workModel = new QSqlRelationalTableModel();
+    workModel->setTable("student_work");
+    workModel->setHeaderData(workModel->fieldIndex("teacher_id"), Qt::Horizontal, tr("Teacher"));
+    workModel->setRelation(workModel->fieldIndex("teacher_id"), QSqlRelation("teacher", "id", "name"));
+    workModel->setHeaderData(workModel->fieldIndex("subject_id"), Qt::Horizontal, tr("Subject"));
+    workModel->setRelation(workModel->fieldIndex("subject_id"), QSqlRelation("subject", "id", "name"));
+    workModel->setHeaderData(workModel->fieldIndex("name"), Qt::Horizontal, tr("Name", "object"));
+    workModel->setHeaderData(workModel->fieldIndex("type"), Qt::Horizontal, tr("Type"));
+    workModel->setHeaderData(workModel->fieldIndex("hours"), Qt::Horizontal, tr("Hours"));
+    workModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    workModel->select();
+
+    ui->workTableView->setModel(workModel);
+    ui->workTableView->setItemDelegate(new QSqlRelationalDelegate());
+    ui->workTableView->setColumnHidden(workModel->fieldIndex("id"), true);
+    ui->workTableView->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->workTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->workTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+
+    ui->workTeacherComboBox->setModel(workModel->relationModel(1));
+    ui->workTeacherComboBox->setModelColumn(workModel->relationModel(1)->fieldIndex("name"));
+    ui->workSubjectComboBox->setModel(workModel->relationModel(2));
+    ui->workSubjectComboBox->setModelColumn(workModel->relationModel(2)->fieldIndex("name"));
+
+    QDataWidgetMapper *workMapper = new QDataWidgetMapper();
+    workMapper->setModel(workModel);
+    workMapper->setItemDelegate(new QSqlRelationalDelegate());
+    workMapper->addMapping(ui->workTeacherComboBox, 1);
+    workMapper->addMapping(ui->workSubjectComboBox, 2);
+    workMapper->addMapping(ui->workNameLineEdit, workModel->fieldIndex("name"));
+    workMapper->addMapping(ui->workTypeLineEdit, workModel->fieldIndex("type"));
+    workMapper->addMapping(ui->workHoursSpinBox, workModel->fieldIndex("hours"));
+    workMapper->toFirst();
+
+    connect(ui->workTableView->selectionModel(), &QItemSelectionModel::currentRowChanged, workMapper, &QDataWidgetMapper::setCurrentModelIndex);
+
+    ui->workTeacherFilterComboBox->setModel(workModel->relationModel(1));
+    ui->workTeacherFilterComboBox->setModelColumn(workModel->relationModel(1)->fieldIndex("name"));
+    ui->workSubjectFilterComboBox->setModel(workModel->relationModel(2));
+    ui->workSubjectFilterComboBox->setModelColumn(workModel->relationModel(2)->fieldIndex("name"));
 }
 
 MainWindow::~MainWindow()
@@ -144,7 +247,9 @@ MainWindow::~MainWindow()
     delete possibleWorkModel;
     delete teacherModel;
     delete teacherToSubjectModel;
-    delete possibleSubjectModel;
+    delete subjectModel;
+    delete classModel;
+    delete workModel;
 }
 
 void MainWindow::filterStudents()
@@ -331,7 +436,7 @@ void MainWindow::clearFilterTeachers()
 void MainWindow::addTeacher()
 {
     QSqlRecord teacherRecord = teacherModel->record();
-    teacherRecord.setValue(studentModel->fieldIndex("id"), QUuid::createUuid().toString(QUuid::WithoutBraces));
+    teacherRecord.setValue(teacherModel->fieldIndex("id"), QUuid::createUuid().toString(QUuid::WithoutBraces));
     if (!teacherModel->insertRecord(0, teacherRecord))
     {
         QMessageBox::critical(this, tr("Error occured while adding teacher"),
@@ -368,7 +473,7 @@ void MainWindow::addTeacherSubject()
     int row = ui->teacherSelectSubjectComboBox->currentIndex();
     if(row == -1)
         return;
-    QVariant subjectId = possibleSubjectModel->record(row).value(0);
+    QVariant subjectId = subjectModel->record(row).value(0);
     int teacherRow = ui->teacherTableView->selectionModel()->currentIndex().row();
     if(teacherRow == -1)
         return;
@@ -423,4 +528,172 @@ void MainWindow::cancelTeachersChanges()
 {
     teacherModel->revertAll();
     teacherToSubjectModel->revertAll();
+}
+
+void MainWindow::addSubject()
+{
+    QSqlRecord subjectRecord = subjectModel->record();
+    subjectRecord.setValue(subjectModel->fieldIndex("id"), QUuid::createUuid().toString(QUuid::WithoutBraces));
+    if (!subjectModel->insertRecord(0, subjectRecord))
+    {
+        QMessageBox::critical(this, tr("Error occured while adding subject"),
+            QString(tr("Error: %1")).arg(subjectModel->lastError().text()),
+            QMessageBox::Cancel);
+        return;
+    }
+    ui->subjectTableView->selectRow(0);
+}
+
+void MainWindow::removeSubject()
+{
+    int row = ui->subjectTableView->selectionModel()->currentIndex().row();
+    if (row == -1)
+        return;
+    if (!subjectModel->removeRow(row))
+    {
+        QMessageBox::critical(this, tr("Error occurd while removing subject"),
+            QString(tr("Error: %1")).arg(subjectModel->lastError().text()),
+            QMessageBox::Cancel);
+        return;
+    }
+}
+
+void MainWindow::acceptSubjectsChanges()
+{
+    if (!subjectModel->submitAll())
+    {
+        QMessageBox::critical(this, tr("Error occured while accepting changes in subjects"),
+            QString(tr("Error: %1")).arg(subjectModel->lastError().text()),
+            QMessageBox::Cancel);
+        return;
+    }
+}
+
+void MainWindow::cancelSubjectsChanges()
+{
+    subjectModel->revertAll();
+}
+
+void MainWindow::filterClasses()
+{
+    QString teacherId = classModel->relationModel(1)->record(ui->classTeacherFilterComboBox->currentIndex()).value(0).toString();
+    QString subjectId = classModel->relationModel(2)->record(ui->classSubjectFilterComboBox->currentIndex()).value(0).toString();
+    QString hoursFromString = QString::number(ui->classHoursFromSpinBox->value());
+    QString hoursToString = QString::number(ui->classHoursToSpinBox->value());
+    classModel->setFilter(QString("teacher_id = \'%1\' AND subject_id = \'%2\' AND (hours BETWEEN %3 AND %4)")
+                            .arg(teacherId, subjectId, hoursFromString, hoursToString));
+    classModel->select();
+}
+
+void MainWindow::clearFilterClasses()
+{
+    classModel->setFilter("");
+    classModel->select();
+}
+
+void MainWindow::addClass()
+{
+    QSqlRecord classRecord = classModel->record();
+    classRecord.setValue(classModel->fieldIndex("id"), QUuid::createUuid().toString(QUuid::WithoutBraces));
+    if (!classModel->insertRecord(0, classRecord))
+    {
+        QMessageBox::critical(this, tr("Error occured while adding class"),
+            QString(tr("Error: %1")).arg(classModel->lastError().text()),
+            QMessageBox::Cancel);
+        return;
+    }
+    ui->classTableView->selectRow(0);
+}
+
+void MainWindow::removeClass()
+{
+    int row = ui->classTableView->selectionModel()->currentIndex().row();
+    if (row == -1)
+        return;
+    if (!classModel->removeRow(row))
+    {
+        QMessageBox::critical(this, tr("Error occurd while removing class"),
+            QString(tr("Error: %1")).arg(classModel->lastError().text()),
+            QMessageBox::Cancel);
+        return;
+    }
+}
+
+void MainWindow::acceptClassesChanges()
+{
+    if (!classModel->submitAll())
+    {
+        QMessageBox::critical(this, tr("Error occured while accepting changes in classs"),
+            QString(tr("Error: %1")).arg(classModel->lastError().text()),
+            QMessageBox::Cancel);
+        return;
+    }
+    possibleClassModel->setQuery(possibleClassModel->query().lastQuery());
+}
+
+void MainWindow::cancelClassesChanges()
+{
+    classModel->revertAll();
+}
+
+void MainWindow::filterWorks()
+{
+    QString teacherId = workModel->relationModel(1)->record(ui->workTeacherFilterComboBox->currentIndex()).value(0).toString();
+    QString subjectId = workModel->relationModel(2)->record(ui->workSubjectFilterComboBox->currentIndex()).value(0).toString();
+    QString hoursFromString = QString::number(ui->workHoursFromSpinBox->value());
+    QString hoursToString = QString::number(ui->workHoursToSpinBox->value());
+    workModel->setFilter(QString("teacher_id = \'%1\' AND subject_id = \'%2\' AND (hours BETWEEN %3 AND %4)")
+                            .arg(teacherId, subjectId, hoursFromString, hoursToString));
+    workModel->select();
+}
+
+void MainWindow::clearFilterWorks()
+{
+    workModel->setFilter("");
+    workModel->select();
+}
+
+void MainWindow::addWork()
+{
+    QSqlRecord workRecord = workModel->record();
+    workRecord.setValue(workModel->fieldIndex("id"), QUuid::createUuid().toString(QUuid::WithoutBraces));
+    if (!workModel->insertRecord(0, workRecord))
+    {
+        QMessageBox::critical(this, tr("Error occured while adding work"),
+            QString(tr("Error: %1")).arg(workModel->lastError().text()),
+            QMessageBox::Cancel);
+        return;
+    }
+    ui->workTableView->selectRow(0);
+}
+
+void MainWindow::removeWork()
+{
+    int row = ui->workTableView->selectionModel()->currentIndex().row();
+    if (row == -1)
+        return;
+    if (!workModel->removeRow(row))
+    {
+        QMessageBox::critical(this, tr("Error occurd while removing work"),
+            QString(tr("Error: %1")).arg(workModel->lastError().text()),
+            QMessageBox::Cancel);
+        return;
+    }
+}
+
+void MainWindow::acceptWorksChanges()
+{
+    if (!workModel->submitAll())
+    {
+        QMessageBox::critical(this, tr("Error occured while accepting changes in works"),
+            QString(tr("Error: %1")).arg(workModel->lastError().text()),
+            QMessageBox::Cancel);
+        return;
+    }
+    possibleWorkModel->setQuery(possibleWorkModel->query().lastQuery());
+}
+
+void MainWindow::cancelWorksChanges()
+{
+    workModel->revertAll();
 }
