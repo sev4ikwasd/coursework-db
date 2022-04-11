@@ -567,6 +567,8 @@ void MainWindow::acceptSubjectsChanges()
             QMessageBox::Cancel);
         return;
     }
+    classModel->relationModel(2)->select();
+    workModel->relationModel(2)->select();
 }
 
 void MainWindow::cancelSubjectsChanges()
