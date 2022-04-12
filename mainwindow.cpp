@@ -522,6 +522,8 @@ void MainWindow::acceptTeachersChanges()
             QMessageBox::Cancel);
         return;
     }
+    classModel->relationModel(1)->select();
+    workModel->relationModel(1)->select();
 }
 
 void MainWindow::cancelTeachersChanges()
